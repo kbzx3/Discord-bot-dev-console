@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from aioconsole import ainput
 
 intents = discord.Intents.all()
-load_dotenv(r"C:\Users\kbzx4\Desktop\ServerSentinel\keys.env")
+load_dotenv("keys.env")
 token = os.environ.get("DISCORD_API_KEY") 
 
 client = commands.Bot(command_prefix="!", intents=intents)
