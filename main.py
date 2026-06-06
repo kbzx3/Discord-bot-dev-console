@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from aioconsole import ainput
 
 intents = discord.Intents.all()
-load_dotenv("keys.env")
+load_dotenv(r"C:\Users\kbzx4\Desktop\ServerSentinel\keys.env")
 token = os.environ.get("DISCORD_API_KEY") 
 client = commands.Bot(command_prefix="!", intents=intents)
 
@@ -70,6 +70,7 @@ async def on_ready():
                 embed = discord.Embed(title=f"Message from the developer of {client.user.name} ", description=message, color=discord.Color.blue())
                 embed.set_footer(text=client.user.name, icon_url=client.user.avatar)
                 await owner.send(embed=embed)
+                print(f"{green}Message sent to {owner}{reset}")
             except Exception as e: print(e)
         elif uinput == '3':
             announcement = await ainput("Message to be broadcasted: ")
@@ -122,6 +123,9 @@ async def on_ready():
         elif uinput == '5':
             await client.close()
             print(f"{red}Stopping program{reset}")
-
+@client.event
+async def on_command_error(ctx, error):
+    if hasattr(ctx.command, 'on_error'):
+        return
 
 client.run(token)
