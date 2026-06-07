@@ -41,11 +41,11 @@ async def on_ready():
         uinput = await ainput("Choose function: ")
         if uinput == '0':
             print('-' * 100)
-            print(f'{"Guild Name":<35} | {"Owner":<20} | {"Members":<10}')
+            print(f'{"Index":<6} | {"Guild Name":<35} | {"Owner":<20} | {"Members":<10}')
             print('-' * 100)
-            for guild in client.guilds:
+            for index,guild in enumerate(client.guilds):
                 owner_name = str(guild.owner) if guild.owner else f"Unknown (ID: {guild.owner_id})"
-                print(f'''{green}{guild.name:<35} {reset}| {green}{owner_name:<20}{reset} |{green} {guild.member_count:<10}{reset}''')
+                print(f'''{index:<6}| {green}{guild.name:<35} {reset}| {green}{owner_name:<20}{reset} |{green} {guild.member_count:<10}{reset}''')
             print('-' * 100)
         elif uinput == '1':
             total_members = sum(guild.member_count for guild in client.guilds)
