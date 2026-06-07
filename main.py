@@ -70,6 +70,9 @@ async def on_ready():
                 guild= client.guilds[indexinput]
                 owner = await(client.fetch_user(guild.owner_id))
                 message = await ainput("Message you want to send:  ")
+                confirm = await ainput(f"Are you sure you want to message {owner}?(y/n): ")
+                if confirm.lower()=='y':pass
+                else: print(f"{red}Cancelled{reset}")
                 embed = discord.Embed(title=f"Message from the developer of {client.user.name} ", description=message, color=discord.Color.blue())
                 embed.set_footer(text=client.user.name, icon_url=client.user.avatar)
                 await owner.send(embed=embed)
@@ -77,6 +80,9 @@ async def on_ready():
             except Exception as e: print(e)
         elif uinput == '3':
             announcement = await ainput("Message to be broadcasted: ")
+            confirm = await ainput(f"Are you sure you want to broadcast {announcement}?(y/n): ")
+            if confirm.lower()=='y': pass
+            else: print(f"{red}Cancelled{reset}")
             embed = discord.Embed(title=f"📢 {client.user.name} Developer Update", description=announcement, color=discord.Color.blue())
             embed.set_footer(text=client.user.name, icon_url=client.user.avatar)
 
@@ -84,7 +90,6 @@ async def on_ready():
                 try:
                     owner = guild.owner or await guild.fetch_member(guild.owner_id) 
                     await owner.send(embed=embed)
-
                     print(f"sent to {owner.name}")
                     await asyncio.sleep(5) 
                 except Exception as e:
@@ -95,7 +100,6 @@ async def on_ready():
                             target_channel = channel
                             break
                     try:
-
                         if target_channel:
                             await target_channel.send(embed=embed)
                         else:
@@ -123,8 +127,11 @@ async def on_ready():
             guildindexinput = await ainput("Guild to leave(Index number only): ")
             guild_ = int(guildindexinput)
             guild = client.guilds[guild_]
+            confirm = await ainput(f"Are you sure you want to leave {guild.name}?(y/n): ")
+            if confirm.lower()== 'y': pass
+            else: print(f"{green}Cancelled{reset}")
             await guild.leave()
-            print(f"{red}Left {guild.name}{reset}")
+            print(f"{red}Left {guild.name}{reset}")          
         elif uinput == '5':
             await client.close()
             print(f"{red}Stopping program{reset}")
