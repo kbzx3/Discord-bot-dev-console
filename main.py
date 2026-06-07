@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from aioconsole import ainput
 
 intents = discord.Intents.all()
-load_dotenv(r"C:\Users\kbzx4\Desktop\ServerSentinel\keys.env")
+load_dotenv("keys.env")
 token = os.environ.get("DISCORD_API_KEY") 
 client = commands.Bot(command_prefix="!", intents=intents)
 
@@ -58,14 +58,17 @@ async def on_ready():
         elif uinput == '2':
             try:
                 print('-' * 100)
-                print(f'{"Guild Name":<35} | {"Owner":<20} | {"Owner ID":<10}')
+                print(f'{"Index":<6} | {"Guild Name":<35} | {"Owner":<20} | {"Owner ID":<10}')
                 print('-' * 100)
-                for guild in client.guilds:
+                for index,guild in enumerate(client.guilds):
+                    guildnum = index
                     owner_name = str(guild.owner) if guild.owner else f"Unknown (ID: {guild.owner_id})"
-                    print(f'{green}{guild.name:<35}{reset} |{green} {owner_name:<20}{reset} | {green}{guild.owner_id:<10}{reset}')
+                    print(f'{guildnum:<6} | {green}{guild.name:<35}{reset} |{green} {owner_name:<20}{reset} | {green}{guild.owner_id:<10}{reset}')
                 print('-' * 100)
-                owner_ = await ainput("Owner do you want to DM(Owner ID only): ")
-                owner = await(client.fetch_user(owner_))
+                indexinput_= await ainput("Owner you want to dm(Index value only): ")
+                indexinput=int(indexinput_)
+                guild= client.guilds[indexinput]
+                owner = await(client.fetch_user(guild.owner_id))
                 message = await ainput("Message you want to send:  ")
                 embed = discord.Embed(title=f"Message from the developer of {client.user.name} ", description=message, color=discord.Color.blue())
                 embed.set_footer(text=client.user.name, icon_url=client.user.avatar)
@@ -109,15 +112,17 @@ async def on_ready():
                         print(f"Fallback failed in {guild.name}: {e2}")
             print("Broadcast complete.")
         elif uinput == '4':
-            print('-' * 100)
-            print(f'{"Guild Name":<35} | {"Owner":<20} | {"Members":<10} | {"Guild ID":<20}')
-            print('-' * 100)
-            for guild in client.guilds:
+            print('-' * 150)
+            print(f'{"Index":<6} | {"Guild Name":<35} | {"Owner":<20} | {"Members":<10} | {"Guild ID":<20}')
+            print('-' * 150)
+            for index,guild in enumerate(client.guilds):
+                guildnumb=index
                 owner_name = str(guild.owner) if guild.owner else f"Unknown (ID: {guild.owner_id})"
-                print(f'{green}{guild.name:<35} {reset}|{green} {owner_name:<20}{reset} | {green}{guild.member_count:<10}{reset} |{green} {guild.id:<20}{reset}')
-            print('-' * 100)
-            guild_ = await ainput("Guild to leave(Guild ID only): ")
-            guild =client.get_guild(int(guild_))
+                print(f'{guildnumb:<6} | {green}{guild.name:<35} {reset}|{green} {owner_name:<20}{reset} | {green}{guild.member_count:<10}{reset} |{green} {guild.id:<20}{reset}')
+            print('-' * 150)
+            guildindexinput = await ainput("Guild to leave(Index number only): ")
+            guild_ = int(guildindexinput)
+            guild = client.guilds[guild_]
             await guild.leave()
             print(f"{red}Left {guild.name}{reset}")
         elif uinput == '5':
@@ -125,7 +130,6 @@ async def on_ready():
             print(f"{red}Stopping program{reset}")
 @client.event
 async def on_command_error(ctx, error):
-    if hasattr(ctx.command, 'on_error'):
         return
 
 client.run(token)
